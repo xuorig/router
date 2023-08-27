@@ -166,15 +166,15 @@ impl RouterSuperServiceFactory for YamlRouterFactory {
             .map(|router| router.supergraph_creator.schema().raw_sdl.as_ref() == &schema)
             .unwrap_or_default();
 
-        let config_changed = previous_router
+        let _config_changed = previous_router
             .map(|router| router.supergraph_creator.config() == configuration)
             .unwrap_or_default();
 
-        if config_changed {
-            configuration
-                .notify
-                .broadcast_configuration(configuration.clone());
-        }
+        // if config_changed {
+        //     configuration
+        //         .notify
+        //         .broadcast_configuration(configuration.clone());
+        // }
 
         let schema = bridge_query_planner.schema();
         if schema_changed {
