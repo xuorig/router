@@ -164,6 +164,7 @@ impl ErrorExtension for FetchError {
             FetchError::MalformedRequest { .. } => "MALFORMED_REQUEST",
             FetchError::MalformedResponse { .. } => "MALFORMED_RESPONSE",
             FetchError::ExecutionFieldNotFound { .. } => "EXECUTION_FIELD_NOT_FOUND",
+            #[cfg(test)]
             FetchError::ExecutionInvalidContent { .. } => "EXECUTION_INVALID_CONTENT",
         }
         .to_string()
