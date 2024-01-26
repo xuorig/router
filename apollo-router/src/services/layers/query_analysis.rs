@@ -158,8 +158,8 @@ impl QueryAnalysisLayer {
 pub type ParsedDocument = Arc<ParsedDocumentInner>;
 
 pub struct ParsedDocumentInner {
-    pub(crate) ast: ast::Document,
-    pub(crate) executable: ExecutableDocument,
-    pub(crate) parse_errors: Option<DiagnosticList>,
-    pub(crate) validation_errors: Option<DiagnosticList>,
+    pub ast: ast::Document,
+    pub executable: ExecutableDocument,
+    pub parse_errors: Option<DiagnosticList>,
+    pub validation_errors: Option<DiagnosticList>,
 }
