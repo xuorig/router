@@ -27,7 +27,7 @@ pub(crate) struct QueryKey {
 /// A plan for a given GraphQL query
 #[derive(Debug, Serialize, Deserialize)]
 pub struct QueryPlan {
-    pub(crate) usage_reporting: UsageReporting,
+    pub usage_reporting: UsageReporting,
     pub(crate) root: PlanNode,
     /// String representation of the query plan (not a json representation)
     pub(crate) formatted_query_plan: Option<String>,
