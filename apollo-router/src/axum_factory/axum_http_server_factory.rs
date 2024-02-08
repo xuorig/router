@@ -567,6 +567,7 @@ async fn handle_graphql(
     service: router::BoxService,
     http_request: Request<Body>,
 ) -> impl IntoResponse {
+    eprintln!("INCREMENTING SESSION COUNT");
     let session_count = ACTIVE_SESSION_COUNT.fetch_add(1, Ordering::Acquire) + 1;
     tracing::info!(value.apollo_router_session_count_active = session_count,);
 
@@ -586,6 +587,7 @@ async fn handle_graphql(
 
     match res {
         Err(e) => {
+            eprintln!("DECREMENTING SESSION COUNT (ERROR)");
             let session_count = ACTIVE_SESSION_COUNT.fetch_sub(1, Ordering::Acquire) - 1;
             tracing::info!(value.apollo_router_session_count_active = session_count,);
 
@@ -628,6 +630,7 @@ async fn handle_graphql(
                 }
             };
 
+            eprintln!("DECREMENTING SESSION COUNT");
             // FIXME: we should instead reduce it after the response has been entirely written
             let session_count = ACTIVE_SESSION_COUNT.fetch_sub(1, Ordering::Acquire) - 1;
             tracing::info!(value.apollo_router_session_count_active = session_count,);
