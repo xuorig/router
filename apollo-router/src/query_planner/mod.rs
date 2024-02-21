@@ -5,7 +5,7 @@
 pub(crate) use bridge_query_planner::*;
 pub(crate) use caching_query_planner::*;
 
-pub use self::fetch::OperationKind;
+pub use self::fetch::{OperationKind, QueryHash};
 
 mod bridge_query_planner;
 mod caching_query_planner;
@@ -29,6 +29,7 @@ pub(crate) const DEFER_DEFERRED_SPAN_NAME: &str = "defer_deferred";
 pub(crate) const CONDITION_SPAN_NAME: &str = "condition";
 pub(crate) const CONDITION_IF_SPAN_NAME: &str = "condition_if";
 pub(crate) const CONDITION_ELSE_SPAN_NAME: &str = "condition_else";
+
 
 // The code resides in a separate submodule to allow writing a log filter activating it
 // separately from the query planner logs, as follows:

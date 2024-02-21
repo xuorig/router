@@ -130,7 +130,7 @@ pub(crate) struct FetchNode {
 }
 
 #[derive(Clone, Default, PartialEq, Deserialize, Serialize)]
-pub(crate) struct QueryHash(#[serde(with = "hex")] pub(crate) Vec<u8>);
+pub struct QueryHash(#[serde(with = "hex")] pub(crate) Vec<u8>);
 
 impl std::fmt::Debug for QueryHash {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -242,6 +242,7 @@ impl FetchNode {
             operation_kind,
             operation_name,
             service_name,
+            schema_aware_hash,
             ..
         } = self;
 
@@ -263,6 +264,13 @@ impl FetchNode {
                 return Ok((Value::Object(Object::default()), Vec::new()));
             }
         };
+
+        // Insert schema aware hash in extensions so
+        // subgraph service can use it to cache subgraph queries
+        {
+            let mut ext = parameters.context.extensions().lock();
+            ext.insert(schema_aware_hash.clone());
+        }
 
         let mut subgraph_request = SubgraphRequest::builder()
             .supergraph_request(parameters.supergraph_request.clone())

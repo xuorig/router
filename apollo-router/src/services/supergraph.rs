@@ -398,7 +398,7 @@ mod test {
             .header("a", "c")
             .uri(Uri::from_static("http://example.com"))
             .method(Method::POST)
-            .query("query { topProducts }")
+            .query(Arc::new("query { topProducts }".into()))
             .operation_name("Default")
             .context(Context::new())
             // We need to follow up on this. How can users creat this easily?
