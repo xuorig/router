@@ -478,7 +478,12 @@ impl tower::Service<SubgraphRequest> for SubgraphService {
                 extensions,
             } = body.clone();
 
-            let hash_value = apq::calculate_hash_for_query(query.as_deref().unwrap_or_default());
+            let hash_value = apq::calculate_hash_for_query(
+                query
+                    .as_ref()
+                    .map(|arc_string| arc_string.as_str())
+                    .unwrap_or_default(),
+            );
 
             let persisted_query = serde_json_bytes::json!({
                 HASH_VERSION_KEY: HASH_VERSION_VALUE,

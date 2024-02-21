@@ -964,7 +964,7 @@ mod router_plugin {
 
     #[rhai_fn(set = "query")]
     pub(crate) fn request_query_set(x: &mut Request, value: &str) {
-        x.query = Some(value.to_string());
+        x.query = Some(Arc::new(value.to_string()));
     }
 
     // Request.operation_name

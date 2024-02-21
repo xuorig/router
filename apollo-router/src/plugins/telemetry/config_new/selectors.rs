@@ -518,7 +518,8 @@ impl Selector for SupergraphSelector {
                 .supergraph_request
                 .body()
                 .query
-                .clone()
+                .as_ref()
+                .map(|q| q.to_string())
                 .or_else(|| default.clone())
                 .map(opentelemetry::Value::from),
             SupergraphSelector::RequestHeader {
@@ -655,14 +656,16 @@ impl Selector for SubgraphSelector {
                 .supergraph_request
                 .body()
                 .query
-                .clone()
+                .as_ref()
+                .map(|q| q.to_string())
                 .or_else(|| default.clone())
                 .map(opentelemetry::Value::from),
             SubgraphSelector::SubgraphQuery { default, .. } => request
                 .subgraph_request
                 .body()
                 .query
-                .clone()
+                .as_ref()
+                .map(|q| q.to_string())
                 .or_else(|| default.clone())
                 .map(opentelemetry::Value::from),
             SubgraphSelector::SubgraphQueryVariable {

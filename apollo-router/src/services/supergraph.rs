@@ -14,6 +14,7 @@ use serde_json_bytes::ByteString;
 use serde_json_bytes::Map as JsonMap;
 use serde_json_bytes::Value;
 use static_assertions::assert_impl_all;
+use std::sync::Arc;
 use tower::BoxError;
 
 use crate::error::Error;
@@ -71,7 +72,7 @@ impl Request {
     #[allow(clippy::too_many_arguments)]
     #[builder(visibility = "pub")]
     fn new(
-        query: Option<String>,
+        query: Option<Arc<String>>,
         operation_name: Option<String>,
         // Skip the `Object` type alias in order to use buildstructor’s map special-casing
         variables: JsonMap<ByteString, Value>,
@@ -107,7 +108,7 @@ impl Request {
     /// In addition, fake requests are expected to be valid, and will panic if given invalid values.
     #[builder(visibility = "pub")]
     fn fake_new(
-        query: Option<String>,
+        query: Option<Arc<String>>,
         operation_name: Option<String>,
         // Skip the `Object` type alias in order to use buildstructor’s map special-casing
         variables: JsonMap<ByteString, Value>,
@@ -161,7 +162,7 @@ impl Request {
         let mut variables = JsonMap::new();
         variables.insert("first", 2_usize.into());
         Self::fake_new(
-            Some(query),
+            Some(query.into()),
             operation_name,
             variables,
             extensions,
@@ -444,7 +445,7 @@ mod test {
                 .variables(variables)
                 .extensions(extensions)
                 .operation_name("Default")
-                .query("query { topProducts }")
+                .query(Arc::new("query { topProducts }".into()))
                 .build()
         );
     }

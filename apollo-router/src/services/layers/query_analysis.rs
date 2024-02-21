@@ -96,7 +96,7 @@ impl QueryAnalysisLayer {
             .lock()
             .await
             .get(&QueryAnalysisKey {
-                query: query.clone(),
+                query: query.to_string(),
                 operation_name: op_name.clone(),
             })
             .cloned();
@@ -130,7 +130,7 @@ impl QueryAnalysisLayer {
 
                 (*self.cache.lock().await).put(
                     QueryAnalysisKey {
-                        query,
+                        query: query.to_string(),
                         operation_name: op_name,
                     },
                     (context.clone(), doc.clone()),

@@ -88,7 +88,7 @@ async fn apq_request(
             if query_matches_hash(query.as_str(), query_hash_bytes.as_slice()) {
                 tracing::trace!("apq: cache insert");
                 let _ = request.context.insert("persisted_query_register", true);
-                cache.insert(redis_key(&query_hash), query).await;
+                cache.insert(redis_key(&query_hash), query.to_string()).await;
                 Ok(request)
             } else {
                 tracing::debug!("apq: graphql request doesn't match provided sha256Hash");
@@ -115,7 +115,7 @@ async fn apq_request(
             if let Ok(cached_query) = cache.get(&redis_key(&apq_hash)).await.get().await {
                 let _ = request.context.insert("persisted_query_hit", true);
                 tracing::trace!("apq: cache hit");
-                request.supergraph_request.body_mut().query = Some(cached_query);
+                request.supergraph_request.body_mut().query = Some(cached_query.into());
                 Ok(request)
             } else {
                 let _ = request.context.insert("persisted_query_hit", false);

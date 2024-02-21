@@ -159,7 +159,8 @@ impl Plugin for Record {
                     req.supergraph_request
                         .body()
                         .query
-                        .clone()
+                        .as_ref()
+                        .map(|q| q.to_string())
                         .unwrap_or_default(),
                     schema.clone(),
                 ) {
@@ -192,7 +193,7 @@ impl Plugin for Record {
                     if let Some(recording) = req.context.extensions().lock().get_mut::<Recording>()
                     {
                         recording.client_request = RequestDetails {
-                            query,
+                            query: query.map(|q| q.to_string()),
                             operation_name,
                             variables,
                             headers,
@@ -243,7 +244,7 @@ impl Plugin for Record {
         ServiceBuilder::new()
             .map_future_with_request_data(
                 |req: &subgraph::Request| RequestDetails {
-                    query: req.subgraph_request.body().query.clone(),
+                    query: req.subgraph_request.body().query.as_ref().map(|q| q.to_string()),
                     operation_name: req.subgraph_request.body().operation_name.clone(),
                     variables: req.subgraph_request.body().variables.clone(),
                     headers: externalize_header_map(req.subgraph_request.headers())

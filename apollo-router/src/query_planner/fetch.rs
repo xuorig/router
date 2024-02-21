@@ -102,7 +102,7 @@ pub(crate) struct FetchNode {
     pub(crate) variable_usages: Vec<String>,
 
     /// The GraphQL subquery that is used for the fetch.
-    pub(crate) operation: String,
+    pub(crate) operation: Arc<String>,
 
     /// The GraphQL subquery operation name.
     pub(crate) operation_name: Option<String>,
@@ -282,7 +282,7 @@ impl FetchNode {
                     )
                     .body(
                         Request::builder()
-                            .query(operation)
+                            .query(operation.clone())
                             .and_operation_name(operation_name.clone())
                             .variables(variables.clone())
                             .build(),
@@ -483,7 +483,7 @@ impl FetchNode {
     }
 
     pub(crate) fn hash_subquery(&mut self, schema: &apollo_compiler::Schema) {
-        let doc = Document::parse(&self.operation, "query.graphql")
+        let doc = Document::parse(&*self.operation, "query.graphql")
             .expect("subgraph queries should be valid");
 
         let mut visitor = QueryHashVisitor::new(schema, &doc);
@@ -498,7 +498,7 @@ impl FetchNode {
         schema: &apollo_compiler::Schema,
         global_authorisation_cache_key: &CacheKeyMetadata,
     ) {
-        let doc = Document::parse(&self.operation, "query.graphql")
+        let doc = Document::parse(&*self.operation, "query.graphql")
             // Assume query planing creates a valid document: ignore parse errors
             .unwrap_or_else(|invalid| invalid.partial);
         let subgraph_query_cache_key =

@@ -862,7 +862,7 @@ impl Selectors for SupergraphAttributes {
         let mut attrs = LinkedList::new();
         if let Some(true) = &self.graphql_document {
             if let Some(query) = &request.supergraph_request.body().query {
-                attrs.push_back(KeyValue::new(GRAPHQL_DOCUMENT, query.clone()));
+                attrs.push_back(KeyValue::new(GRAPHQL_DOCUMENT, query.to_string()));
             }
         }
         if let Some(true) = &self.graphql_operation_name {
@@ -910,7 +910,7 @@ impl Selectors for SubgraphAttributes {
         let mut attrs = LinkedList::new();
         if let Some(true) = &self.graphql_document {
             if let Some(query) = &request.subgraph_request.body().query {
-                attrs.push_back(KeyValue::new(SUBGRAPH_GRAPHQL_DOCUMENT, query.clone()));
+                attrs.push_back(KeyValue::new(SUBGRAPH_GRAPHQL_DOCUMENT, query.to_string()));
             }
         }
         if let Some(true) = &self.graphql_operation_name {

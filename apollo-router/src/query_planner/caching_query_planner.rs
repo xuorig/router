@@ -284,7 +284,7 @@ where
 
         let caching_key = CachingQueryKey {
             schema_id,
-            query: request.query.clone(),
+            query: request.query.to_string(),
             operation: request.operation_name.to_owned(),
             metadata: request
                 .context
@@ -317,11 +317,11 @@ where
 
             let schema = &self.schema.api_schema().definitions;
             if let Ok(modified_query) = add_defer_labels(schema, &doc.ast) {
-                query = modified_query.to_string();
+                query = modified_query.to_string().into();
             }
 
             let request = QueryPlannerRequest::builder()
-                .query(query)
+                .query(query.to_string())
                 .and_operation_name(operation_name)
                 .context(context)
                 .build();

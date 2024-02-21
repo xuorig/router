@@ -42,7 +42,7 @@ impl Request {
 #[derive(Clone, Derivative)]
 #[derivative(Debug)]
 pub(crate) struct CachingRequest {
-    pub(crate) query: String,
+    pub(crate) query: Arc<String>,
     pub(crate) operation_name: Option<String>,
     pub(crate) context: Context,
 }
@@ -54,7 +54,7 @@ impl CachingRequest {
     /// Required parameters are required in non-testing code to create a QueryPlannerRequest.
     #[builder]
     pub(crate) fn new(
-        query: String,
+        query: Arc<String>,
         operation_name: Option<String>,
         context: Context,
     ) -> CachingRequest {

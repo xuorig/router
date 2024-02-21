@@ -1,5 +1,6 @@
 use std::sync::atomic::AtomicUsize;
 use std::sync::atomic::Ordering;
+use std::sync::Arc;
 
 use futures::future;
 use serde::Deserialize;
@@ -232,7 +233,7 @@ impl SubscriptionNode {
                     )
                     .body(
                         Request::builder()
-                            .query(operation)
+                            .query(Arc::new(operation.clone()))
                             .and_operation_name(operation_name.clone())
                             .variables(variables.clone())
                             .build(),

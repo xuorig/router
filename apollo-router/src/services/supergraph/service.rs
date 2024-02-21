@@ -587,7 +587,7 @@ async fn plan_query(
     operation_name: Option<String>,
     context: Context,
     schema: Arc<Schema>,
-    query_str: String,
+    query_str: Arc<String>,
 ) -> Result<QueryPlannerResponse, CacheResolverError> {
     // FIXME: we have about 80 tests creating a supergraph service and crafting a supergraph request for it
     // none of those tests create an executable document to put it in the context, and the document cannot be created

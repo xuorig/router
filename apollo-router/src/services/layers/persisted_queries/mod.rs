@@ -113,7 +113,7 @@ impl PersistedQueryLayer {
                 manifest_poller.get_operation_body(persisted_query_id)
             {
                 let body = request.supergraph_request.body_mut();
-                body.query = Some(persisted_query_body);
+                body.query = Some(persisted_query_body.into());
                 body.extensions.remove("persistedQuery");
                 // Record that we actually used our ID, so we can skip the
                 // safelist check later.

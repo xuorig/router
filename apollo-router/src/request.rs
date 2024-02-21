@@ -7,6 +7,7 @@ use serde::Serialize;
 use serde_json_bytes::ByteString;
 use serde_json_bytes::Map as JsonMap;
 use serde_json_bytes::Value;
+use std::sync::Arc;
 
 use crate::configuration::BatchingMode;
 use crate::json_ext::Object;
@@ -24,7 +25,7 @@ pub struct Request {
     /// For historical purposes, the term "query" is commonly used to refer to
     /// *any* GraphQL operation which might be, e.g., a `mutation`.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub query: Option<String>,
+    pub query: Option<Arc<String>>,
 
     /// The (optional) GraphQL operation name.
     ///
@@ -115,7 +116,7 @@ impl Request {
     /// tolerant to missing properties which are only necessary for testing
     /// purposes.  If you are writing tests, you may want to use `Self::fake_new()`.)
     fn new(
-        query: Option<String>,
+        query: Option<Arc<String>>,
         operation_name: Option<String>,
         // Skip the `Object` type alias in order to use buildstructor’s map special-casing
         variables: JsonMap<ByteString, Value>,
@@ -140,7 +141,7 @@ impl Request {
     /// While today, its paramters have the same optionality as its `new`
     /// counterpart, that may change in future versions.
     fn fake_new(
-        query: Option<String>,
+        query: Option<Arc<String>>,
         operation_name: Option<String>,
         // Skip the `Object` type alias in order to use buildstructor’s map special-casing
         variables: JsonMap<ByteString, Value>,
@@ -268,7 +269,7 @@ impl Request {
             .extensions(extensions);
 
         let request = if let Some(query_str) = query {
-            request_builder.query(query_str).build()
+            request_builder.query(Arc::new(query_str.into())).build()
         } else {
             request_builder.build()
         };

@@ -62,7 +62,7 @@ impl Replay {
         }
 
         let req = supergraph::Request::builder()
-            .query(client_request.query.unwrap().clone())
+            .query(Arc::new(client_request.query.unwrap().clone()))
             .and_operation_name(client_request.operation_name.clone())
             .variables(client_request.variables.clone())
             .headers(request_headers)

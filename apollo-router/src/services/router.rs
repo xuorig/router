@@ -16,6 +16,7 @@ use serde_json_bytes::Map as JsonMap;
 use serde_json_bytes::Value;
 use static_assertions::assert_impl_all;
 use tower::BoxError;
+use std::sync::Arc;
 
 use self::service::MULTIPART_DEFER_CONTENT_TYPE_HEADER_VALUE;
 use self::service::MULTIPART_SUBSCRIPTION_CONTENT_TYPE_HEADER_VALUE;
@@ -145,7 +146,8 @@ impl TryFrom<supergraph::Request> for Request {
         let router_request = if parts.method == Method::GET {
             // get request
             let get_path = serde_urlencoded::to_string([
-                ("query", request.query),
+                // TODO: Needs an owned string here
+                ("query", request.query.map(|q| q.to_string())),
                 ("operationName", request.operation_name),
                 (
                     "extensions",

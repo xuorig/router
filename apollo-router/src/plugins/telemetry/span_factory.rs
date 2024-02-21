@@ -130,7 +130,8 @@ impl SpanMode {
                         .supergraph_request
                         .body()
                         .query
-                        .as_deref()
+                        .as_ref()
+                        .map(|arc_string| arc_string.as_str())
                         .unwrap_or_default(),
                     apollo_private.field_level_instrumentation_ratio =
                         field_level_instrumentation_ratio,
@@ -178,7 +179,8 @@ impl SpanMode {
                     .subgraph_request
                     .body()
                     .query
-                    .as_deref()
+                    .as_ref()
+                    .map(|arc_string| arc_string.as_str())
                     .unwrap_or_default();
                 let operation_name = req
                     .subgraph_request
