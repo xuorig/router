@@ -88,6 +88,7 @@ pub use error::QueryPlannerError;
 pub use error::RouterError;
 pub use json_ext::Path;
 pub use spec::operation_limits::OperationLimits;
+pub use query_planner::QueryHash;
 
 pub use crate::axum_factory::set_add_extra_endpoints_layer;
 pub use crate::axum_factory::unsupported_set_axum_router_callback;
