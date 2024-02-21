@@ -18,7 +18,6 @@ use crate::json_ext::Object;
 // also remove `Fields::Other` in `DeserializeSeed` impl.
 #[serde(rename_all = "camelCase")]
 #[derivative(Debug, PartialEq, Eq, Hash)]
-#[non_exhaustive]
 pub struct Request {
     /// The GraphQL operation (e.g., query, mutation) string.
     ///
